@@ -1,4 +1,12 @@
 {
   "identifier": "com.akl.bob-plugin-akl-chatgpt-free-translate",
-  "versions": []
+  "versions": [
+    {
+      "version": "0.0.1",
+      "desc": "feat: release first version",
+      "sha256": "290b502357a9a90c6df4527fd79a679a0f007806424fe62f9efb654cfd28f877",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.1/bob-plugin-gemini-translate_v0.0.1.bobplugin",
+      "minBobVersion": "0.5.0"
+    }
+  ]
 }
