@@ -31,7 +31,7 @@ jobs:
           echo "version=$output" >> $GITHUB_OUTPUT
 
       - name: Package plugin final
-        run: mv release/bob-plugin-gemini-translate.bobplugin release/bob-plugin-gemini-translate.bobplugin_${{ steps.run_script.outputs.version }}.bobplugin
+        run: mv release/bob-plugin-gemini-translate.bobplugin release/bob-plugin-gemini-translate_${{ steps.run_script.outputs.version }}.bobplugin
 
       - name: Commit files
         run: |
