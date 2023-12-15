@@ -28,7 +28,7 @@
           "value": "gemini-pro"
         }
       ],
-      "desc": "使用的模型"
+      "desc": "使用的Gemini模型"
     }
   ]
 }
