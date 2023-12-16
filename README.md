@@ -1,5 +1,5 @@
 <div>
-  <h1 align="center">Claude Translator Bob Plugin</h1>
+  <h1 align="center">Gemini Translator Bob Plugin</h1>
 </div>
 
 ## 简介
