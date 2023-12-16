@@ -6,7 +6,16 @@ function supportLanguages() {
 }
 
 function translatePrompt({ source_lang, target_lang, origin_text }) {
-  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
+
+  // Gemini seems poorly RLHFed.So I currently disable these complex prompt.
+
+  // return `
+  // 请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}
+  // 如果 ${origin_text} 是汉语拼音,请将其翻译成${target_lang}.
+  // 如果 ${source_lang}和 ${target_lang}一样，则回答"请检查你的翻译语言设置".
+  // `;
+
+  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`
 }
 
 function polishPrompt({ source_lang, origin_text }) {
