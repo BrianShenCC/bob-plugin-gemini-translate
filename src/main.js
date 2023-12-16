@@ -5,6 +5,38 @@ function supportLanguages() {
   return [...language.langMap.keys()];
 }
 
+function translatePrompt({ source_lang, target_lang, origin_text }) {
+  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
+}
+
+function polishPrompt({ source_lang, origin_text }) {
+  if (source_lang === "ZH") return `请润色以下内容：\n${origin_text}`;
+  return `Revise the following sentences to make them more clear, concise, and coherent. \n${origin_text}`;
+}
+
+function generatePrompts(query, mode) {
+  const detectTo = language.langMap.get(query.detectTo);
+  const detectFrom = language.langMap.get(query.detectFrom);
+  if (!detectTo) {
+    const err = new Error();
+    Object.assign(err, {
+      _type: "unsupportLanguage",
+      _message: "Not Support Language",
+    });
+    throw err;
+  }
+  const source_lang = detectFrom || "ZH";
+  const target_lang = detectTo || "EN";
+
+  if (mode === "polish" || source_lang === target_lang) {
+    return polishPrompt({ source_lang, origin_text: query.text });
+  } else if (mode === "translate") {
+    return translatePrompt({ source_lang, target_lang, origin_text: query.text });
+  } else {
+    throw new Error("未知模式");
+  }
+}
+
 function translate(query, completion) {
   (async () => {
     const origin_text = query.text || "";
@@ -19,22 +51,14 @@ function translate(query, completion) {
       return;
     }
     if (origin_text?.trim() === "") return;
-    const targetLanguage = language.langMap.get(query.detectTo);
-    const sourceLanguage = language.langMap.get(query.detectFrom);
-    if (!targetLanguage) {
-      const err = new Error();
-      Object.assign(err, {
-        _type: "unsupportLanguage",
-        _message: "Not Support Language",
-      });
-      throw err;
-    }
-    const source_lang = sourceLanguage || "ZH";
-    const target_lang = targetLanguage || "EN";
 
-    let model = $option.model;
+    const prompt = generatePrompts({
+      detectFrom: query.detectFrom,
+      detectTo: query.detectTo,
+      text: origin_text,
+    }, $option.mode);
+    const model = $option.model;
 
-    const prompt = `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
     $http.request({
       method: "POST",
       url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apikey}`,
