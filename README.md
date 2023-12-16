@@ -4,7 +4,7 @@
 
 ## 简介
 
-基于 [Gemini API](https://ai.google.dev/docs/gemini_api_overview) 实现的 [Bob](https://bobtranslate.com/) 插件。
+基于 [Gemini API](https://ai.google.dev/docs/gemini_api_overview) 实现的 [Bob](https://bobtranslate.com/) 插件，支持润色和翻译两种模式。
 
 ### 语言模型
 
