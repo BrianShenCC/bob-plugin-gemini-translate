@@ -2,6 +2,13 @@
   "identifier": "com.akl.bob-plugin-akl-chatgpt-free-translate",
   "versions": [
     {
+      "version": "0.0.2",
+      "desc": "feat: 支持润色模式",
+      "sha256": "554e73ee49957e5041278d48d918e02cc0d08f96290b784ad8320d2686aeaf72",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.2/bob-plugin-gemini-translate_v0.0.2.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.1",
       "desc": "feat: release first version",
       "sha256": "290b502357a9a90c6df4527fd79a679a0f007806424fe62f9efb654cfd28f877",
