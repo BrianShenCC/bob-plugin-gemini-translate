@@ -52,16 +52,21 @@ function translate(query, completion) {
     }
     if (origin_text?.trim() === "") return;
 
-    const prompt = generatePrompts({
-      detectFrom: query.detectFrom,
-      detectTo: query.detectTo,
-      text: origin_text,
-    }, $option.mode);
+    const prompt = generatePrompts(
+      {
+        detectFrom: query.detectFrom,
+        detectTo: query.detectTo,
+        text: origin_text,
+      },
+      $option.mode
+    );
     const model = $option.model;
 
-    $http.request({
+    let paragraphs = [];
+
+    $http.streamRequest({
       method: "POST",
-      url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apikey}`,
+      url: `https://generativelanguage.googleapis.com/v1/models/${model}:streamGenerateContent?key=${apikey}&alt=sse`,
       header: {
         "Content-Type": "application/json",
       },
@@ -74,6 +79,20 @@ function translate(query, completion) {
             parts: [{ text: prompt }],
           },
         ],
+      },
+      streamHandler: (stream) => {
+        let streamText = stream.text;
+        const reg = /^data:/;
+        if (!reg.test(streamText)) {
+          throw new Error("response data invalid");
+        }
+        streamText = streamText.replace(reg, "");
+        const resultJson = JSON.parse(streamText);
+        const resultText = resultJson?.candidates?.[0]?.content?.parts?.[0].text;
+        paragraphs.push(resultText);
+        query.onStream({
+          result: { toParagraphs: paragraphs },
+        });
       },
       handler: (result) => {
         if (result.response.statusCode >= 400) {
@@ -89,11 +108,8 @@ function translate(query, completion) {
           }
           utils.handleError(query, result);
         } else {
-          const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text;
           query.onCompletion({
-            result: {
-              toParagraphs: [resultText],
-            },
+            result: { toParagraphs: paragraphs },
           });
         }
       },
