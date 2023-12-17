@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.5",
+      "desc": "Merge pull request #2 from cyrus-cai/main",
+      "sha256": "90b662464c4fded02c0988f7d785e1db62c38fcdecc39b107dafca431369cbdd",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.5/bob-plugin-gemini-translate_v0.0.5.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.4",
       "desc": "feat: support stream result",
       "sha256": "30a7cdfe5bbd172eb5b793615486a2c400a77961711e32aafc2c4eefea310380",
