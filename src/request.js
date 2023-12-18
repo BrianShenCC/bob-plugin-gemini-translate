@@ -43,7 +43,7 @@ const streamRequest = (prompt, { model, api_key, query }) => {
   });
 };
 
-const normalRequest = (prompt, { model, api_key, query }) => {
+const normalRequest = (completion, prompt, { model, api_key, query }) => {
   $http.request({
     method: "POST",
     url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${api_key}`,
@@ -65,7 +65,7 @@ const normalRequest = (prompt, { model, api_key, query }) => {
         utils.handleError(query, result);
       } else {
         const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text;
-        query.onCompletion({
+        completion({
           result: {
             toParagraphs: [resultText],
           },

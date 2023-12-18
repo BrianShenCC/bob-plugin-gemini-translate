@@ -71,7 +71,7 @@ function translate(query, completion) {
     if (request_mode === "stream") {
       streamRequest(prompt, { model, api_key, query });
     } else {
-      normalRequest(prompt, { model, api_key, query });
+      normalRequest(completion, prompt, { model, api_key, query });
     }
   })().catch((err) => {
     query.onCompletion({
