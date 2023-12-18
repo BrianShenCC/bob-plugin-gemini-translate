@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.7",
+      "desc": "feat: 兼容社区版不支持query.onCompletion",
+      "sha256": "08e8e1997d415c4ba256932bc000e86e0df96b962c5697013e2209ea79354ddf",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.7/bob-plugin-gemini-translate_v0.0.7.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.6",
       "desc": "feat: 支持请求模式流式和普通切换以支持bob社区版，修复了流式请求返回结果换行错误bug",
       "sha256": "fc280ce55bd3910f034340289f9b97ee0a9e957777871e7d30847b9b867d9a34",
