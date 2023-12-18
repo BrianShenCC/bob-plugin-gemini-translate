@@ -42,6 +42,16 @@ var HttpErrorCodes = {
 };
 
 function handleError(query, result) {
+  if (result?.data?.error?.message) {
+    query.onCompletion({
+      error: {
+        type: "param",
+        message: result?.data?.error?.message,
+        addtion: `${JSON.stringify(result?.data)}`,
+      },
+    });
+    return;
+  }
   const { statusCode } = result.response;
   const reason = statusCode >= 400 && statusCode < 500 ? "param" : "api";
   query.onCompletion({

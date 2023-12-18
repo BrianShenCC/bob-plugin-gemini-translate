@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",
@@ -8,7 +8,7 @@
   "author": "Brian Shen",
   "homepage": "https://github.com/BrianShenCC/bob-plugin-gemini-translate",
   "appcast": "https://raw.githubusercontent.com/BrianShenCC/bob-plugin-gemini-translate/main/appcast.json",
-  "minBobVersion": "1.8.0",
+  "minBobVersion": "0.5.0",
   "options": [
     {
       "identifier": "api_key",
@@ -43,6 +43,21 @@
         {
           "title": "润色",
           "value": "polish"
+        }
+      ]
+    }, {
+      "identifier": "request_mode",
+      "type": "menu",
+      "title": "请求方式",
+      "defaultValue": "stream",
+      "menuValues": [
+        {
+          "title": "流式请求",
+          "value": "stream"
+        },
+        {
+          "title": "普通请求",
+          "value": "normal"
         }
       ]
     }

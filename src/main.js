@@ -1,12 +1,11 @@
 var language = require("./language.js");
-var utils = require("./utils.js");
+var { streamRequest, normalRequest } = require("./request.js");
 
 function supportLanguages() {
   return [...language.langMap.keys()];
 }
 
 function translatePrompt({ source_lang, target_lang, origin_text }) {
-
   // Gemini seems poorly RLHFed.So I currently disable these complex prompt.
 
   // return `
@@ -15,7 +14,7 @@ function translatePrompt({ source_lang, target_lang, origin_text }) {
   // 如果 ${source_lang}和 ${target_lang}一样，则回答"请检查你的翻译语言设置".
   // `;
 
-  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`
+  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
 }
 
 function polishPrompt({ source_lang, origin_text }) {
@@ -49,9 +48,9 @@ function generatePrompts(query, mode) {
 function translate(query, completion) {
   (async () => {
     const origin_text = query.text || "";
-    const apikey = $option.api_key || "";
-    if (!apikey) {
-      completion({
+    const { request_mode, model, mode, api_key = "" } = $option;
+    if (!api_key) {
+      query.onCompletion({
         error: {
           type: "param",
           message: "未输入api_key",
@@ -67,64 +66,15 @@ function translate(query, completion) {
         detectTo: query.detectTo,
         text: origin_text,
       },
-      $option.mode
+      mode
     );
-    const model = $option.model;
-
-    let paragraphs = [];
-
-    $http.streamRequest({
-      method: "POST",
-      url: `https://generativelanguage.googleapis.com/v1/models/${model}:streamGenerateContent?key=${apikey}&alt=sse`,
-      header: {
-        "Content-Type": "application/json",
-      },
-      body: {
-        generationConfig: {},
-        safetySettings: [],
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: prompt }],
-          },
-        ],
-      },
-      streamHandler: (stream) => {
-        let streamText = stream.text;
-        const reg = /^data:/;
-        if (!reg.test(streamText)) {
-          throw new Error("response data invalid");
-        }
-        streamText = streamText.replace(reg, "");
-        const resultJson = JSON.parse(streamText);
-        const resultText = resultJson?.candidates?.[0]?.content?.parts?.[0].text;
-        paragraphs.push(resultText);
-        query.onStream({
-          result: { toParagraphs: paragraphs },
-        });
-      },
-      handler: (result) => {
-        if (result.response.statusCode >= 400) {
-          if (result?.data?.error?.message) {
-            completion({
-              error: {
-                type: "param",
-                message: result?.data?.error?.message,
-                addtion: `${JSON.stringify(result?.data)}`,
-              },
-            });
-            return;
-          }
-          utils.handleError(query, result);
-        } else {
-          query.onCompletion({
-            result: { toParagraphs: paragraphs },
-          });
-        }
-      },
-    });
+    if (request_mode === "stream") {
+      streamRequest(prompt, { model, api_key, query });
+    } else {
+      normalRequest(prompt, { model, api_key, query });
+    }
   })().catch((err) => {
-    completion({
+    query.onCompletion({
       error: {
         type: err._type || "unknown",
         message: err._message || "未知错误",
