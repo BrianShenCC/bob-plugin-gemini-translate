@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.9",
+      "desc": "支持对话模式",
+      "sha256": "8cd89f2b128a3d1c2c9cc53754b38f0dd497bc3ce7e848492a53ce63f3b1a7c7",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.9/bob-plugin-gemini-translate_v0.0.9.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.8",
       "desc": "feat: 替换原始文本中的openai和gpt为*，已防止gemini不返回结果",
       "sha256": "e125b82adda3ba713ed2af6516d151741a00dcf2941f9b9e4f0326ecc9f40ada",
