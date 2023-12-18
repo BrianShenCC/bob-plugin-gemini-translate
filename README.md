@@ -4,8 +4,9 @@
 
 ## 简介
 
-基于 [Gemini API](https://ai.google.dev/docs/gemini_api_overview) 实现的 [Bob](https://bobtranslate.com/) 插件，支持润色和翻译两种模式。
-后续可能会提供对话功能，~~接口代理~~，由于接口代理需要国内域名备案，暂时不考虑弄了
+基于 [Gemini API](https://ai.google.dev/docs/gemini_api_overview) 实现的 [Bob](https://bobtranslate.com/) 插件，支持润色，翻译和对话。
+Gemini的对话功能似乎经过测试好像要比GPT差。
+~~接口代理~~，由于接口代理需要国内域名备案，暂时不考虑弄了
 
 ### 语言模型
 

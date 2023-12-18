@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",
@@ -35,6 +35,7 @@
       "type": "menu",
       "title": "模式",
       "defaultValue": "translate",
+      "desc": "对话模式可以使用#clear清空对话内容，目前没有限制对话数量，如果由于对话超长请使用#clear清空",
       "menuValues": [
         {
           "title": "翻译",
@@ -43,6 +44,10 @@
         {
           "title": "润色",
           "value": "polish"
+        },
+        {
+          "title": "对话",
+          "value": "chat"
         }
       ]
     }, {

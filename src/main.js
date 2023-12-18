@@ -1,11 +1,12 @@
 var language = require("./language.js");
 var { streamRequest, normalRequest } = require("./request.js");
+var { context } = require("./chart.js");
 
 function supportLanguages() {
   return [...language.langMap.keys()];
 }
 
-function translatePrompt({ source_lang, target_lang, origin_text }) {
+function translatePrompt(origin_text, { source_lang, target_lang }) {
   // Gemini seems poorly RLHFed.So I currently disable these complex prompt.
 
   // return `
@@ -17,12 +18,12 @@ function translatePrompt({ source_lang, target_lang, origin_text }) {
   return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
 }
 
-function polishPrompt({ source_lang, origin_text }) {
+function polishPrompt(origin_text, { source_lang }) {
   if (source_lang === "ZH") return `请润色以下内容：\n${origin_text}`;
   return `Revise the following sentences to make them more clear, concise, and coherent. \n${origin_text}`;
 }
 
-function generatePrompts(query, mode) {
+function generatePrompts(text, mode, query) {
   const detectTo = language.langMap.get(query.detectTo);
   const detectFrom = language.langMap.get(query.detectFrom);
   if (!detectTo) {
@@ -35,13 +36,35 @@ function generatePrompts(query, mode) {
   }
   const source_lang = detectFrom || "ZH";
   const target_lang = detectTo || "EN";
-  let origin_text = query.text || "";
-  // replace gpt&openAi with "*" to avoid gemini return "undefined".
-  origin_text = origin_text.replace(/gpt|openai/gi, "*");
   if (mode === "polish" || source_lang === target_lang) {
-    return polishPrompt({ source_lang, origin_text });
+    return polishPrompt(text, { source_lang });
   } else if (mode === "translate") {
-    return translatePrompt({ source_lang, target_lang, origin_text });
+    return translatePrompt(text, { source_lang, target_lang });
+  } else {
+    throw new Error("未知模式");
+  }
+}
+
+[{ role: "user", parts: [{ origin_text: "后面我不管说什么都夸夸我" }] }][{ role: "user", parts: [{ text: prompt }] }];
+
+function getConversation(text, mode, detectFrom, detectTo) {
+  // replace gpt&openAi with "*" to avoid gemini return "undefined".
+  const origin_text = text.replace(/gpt|openai/gi, "*");
+  if (mode === "polish" || mode === "translate") {
+    const prompt = generatePrompts(origin_text, mode, {
+      detectFrom,
+      detectTo,
+    });
+
+    return [{ role: "user", parts: [{ text: prompt }] }];
+  } else if (mode === "chat") {
+    if (origin_text.trim() === "#clear") {
+      context.clear();
+      return [];
+    }
+    const data = { role: "user", parts: [{ text: origin_text }] };
+    context.get().push(data);
+    return context.get();
   } else {
     throw new Error("未知模式");
   }
@@ -62,19 +85,41 @@ function translate(query, completion) {
       return;
     }
     if (origin_text?.trim() === "") return;
+    const contents = getConversation(origin_text, mode, query.detectFrom, query.detectTo);
+    if (contents.length === 0) {
+      onCompletion({ result: { toParagraphs: ["对话已清空"] } });
+      return;
+    }
+    const setConversation = function (result) {
+      if (mode === "chat" && result.result) {
+        const returnText = result.result.toParagraphs[0];
+        context.get().push({
+          role: "model",
+          parts: [{ text: returnText }],
+        });
+      }
+    };
 
-    const prompt = generatePrompts(
-      {
-        detectFrom: query.detectFrom,
-        detectTo: query.detectTo,
-        text: origin_text,
-      },
-      mode
-    );
     if (request_mode === "stream") {
-      streamRequest(prompt, { model, api_key, query });
+      streamRequest(contents, {
+        model,
+        api_key,
+        query,
+        onCompletion: function (result) {
+          onCompletion(result);
+          setConversation(result);
+        },
+      });
     } else {
-      normalRequest(prompt, { model, api_key, query, completion });
+      normalRequest(contents, {
+        model,
+        api_key,
+        query,
+        onCompletion: function (result) {
+          onCompletion(result);
+          setConversation(result);
+        },
+      });
     }
   })().catch((err) => {
     onCompletion({

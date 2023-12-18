@@ -1,8 +1,8 @@
 var utils = require("./utils.js");
 
-const streamRequest = (prompt, { model, api_key, query }) => {
+const streamRequest = async (contents, { model, api_key, query, onCompletion }) => {
   let resultText = "";
-  $http.streamRequest({
+  return $http.streamRequest({
     method: "POST",
     url: `https://generativelanguage.googleapis.com/v1/models/${model}:streamGenerateContent?key=${api_key}&alt=sse`,
     header: {
@@ -11,12 +11,7 @@ const streamRequest = (prompt, { model, api_key, query }) => {
     body: {
       generationConfig: {},
       safetySettings: [],
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: prompt }],
-        },
-      ],
+      contents,
     },
     streamHandler: (stream) => {
       let streamText = stream.text;
@@ -33,9 +28,9 @@ const streamRequest = (prompt, { model, api_key, query }) => {
     },
     handler: (result) => {
       if (result.response.statusCode >= 400) {
-        utils.handleError(query.onCompletion, result);
+        utils.handleError(onCompletion, result);
       } else {
-        query.onCompletion({
+        onCompletion({
           result: { toParagraphs: [resultText] },
         });
       }
@@ -43,7 +38,7 @@ const streamRequest = (prompt, { model, api_key, query }) => {
   });
 };
 
-const normalRequest = (prompt, { model, api_key, query, completion }) => {
+const normalRequest = async (contents, { model, api_key, onCompletion }) => {
   $http.request({
     method: "POST",
     url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${api_key}`,
@@ -53,19 +48,14 @@ const normalRequest = (prompt, { model, api_key, query, completion }) => {
     body: {
       generationConfig: {},
       safetySettings: [],
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: prompt }],
-        },
-      ],
+      contents,
     },
     handler: (result) => {
       if (result.response.statusCode >= 400) {
-        utils.handleError(completion, result);
+        utils.handleError(onCompletion, result);
       } else {
         const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text;
-        completion({
+        onCompletion({
           result: {
             toParagraphs: [resultText],
           },
