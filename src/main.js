@@ -49,8 +49,9 @@ function translate(query, completion) {
   (async () => {
     const origin_text = query.text || "";
     const { request_mode, model, mode, api_key = "" } = $option;
+    const onCompletion = request_mode === "stream" ? query.onCompletion : completion;
     if (!api_key) {
-      query.onCompletion({
+      onCompletion({
         error: {
           type: "param",
           message: "未输入api_key",
@@ -71,10 +72,10 @@ function translate(query, completion) {
     if (request_mode === "stream") {
       streamRequest(prompt, { model, api_key, query });
     } else {
-      normalRequest(prompt, { model, api_key, query });
+      normalRequest(prompt, { model, api_key, query, completion });
     }
   })().catch((err) => {
-    query.onCompletion({
+    onCompletion({
       error: {
         type: err._type || "unknown",
         message: err._message || "未知错误",

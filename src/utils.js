@@ -41,9 +41,9 @@ var HttpErrorCodes = {
   "511": "Network Authentication Required"
 };
 
-function handleError(query, result) {
+function handleError(completion, result) {
   if (result?.data?.error?.message) {
-    query.onCompletion({
+    completion({
       error: {
         type: "param",
         message: result?.data?.error?.message,
@@ -54,7 +54,7 @@ function handleError(query, result) {
   }
   const { statusCode } = result.response;
   const reason = statusCode >= 400 && statusCode < 500 ? "param" : "api";
-  query.onCompletion({
+  completion({
     error: {
       type: reason,
       message: `接口响应错误 - ${HttpErrorCodes[statusCode]}`,

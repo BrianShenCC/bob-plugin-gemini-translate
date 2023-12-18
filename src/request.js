@@ -33,7 +33,7 @@ const streamRequest = (prompt, { model, api_key, query }) => {
     },
     handler: (result) => {
       if (result.response.statusCode >= 400) {
-        utils.handleError(query, result);
+        utils.handleError(query.onCompletion, result);
       } else {
         query.onCompletion({
           result: { toParagraphs: [resultText] },
@@ -43,7 +43,7 @@ const streamRequest = (prompt, { model, api_key, query }) => {
   });
 };
 
-const normalRequest = (prompt, { model, api_key, query }) => {
+const normalRequest = (prompt, { model, api_key, query, completion }) => {
   $http.request({
     method: "POST",
     url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${api_key}`,
@@ -62,10 +62,10 @@ const normalRequest = (prompt, { model, api_key, query }) => {
     },
     handler: (result) => {
       if (result.response.statusCode >= 400) {
-        utils.handleError(query, result);
+        utils.handleError(completion, result);
       } else {
         const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text;
-        query.onCompletion({
+        completion({
           result: {
             toParagraphs: [resultText],
           },
