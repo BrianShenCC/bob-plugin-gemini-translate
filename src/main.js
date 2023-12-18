@@ -14,9 +14,7 @@ function translatePrompt({ source_lang, target_lang, origin_text }) {
   // 如果 ${source_lang}和 ${target_lang}一样，则回答"请检查你的翻译语言设置".
   // `;
 
-  const origin_text_modified = origin_text.replace(/gpt|openai/gi, "*");
-
-  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text_modified}`;
+  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
 }
 
 function polishPrompt({ source_lang, origin_text }) {
@@ -37,11 +35,13 @@ function generatePrompts(query, mode) {
   }
   const source_lang = detectFrom || "ZH";
   const target_lang = detectTo || "EN";
-
+  let origin_text = query.text || "";
+  // replace gpt&openAi with "*" to avoid gemini return "undefined".
+  origin_text = origin_text.replace(/gpt|openai/gi, "*");
   if (mode === "polish" || source_lang === target_lang) {
-    return polishPrompt({ source_lang, origin_text: query.text });
+    return polishPrompt({ source_lang, origin_text });
   } else if (mode === "translate") {
-    return translatePrompt({ source_lang, target_lang, origin_text: query.text });
+    return translatePrompt({ source_lang, target_lang, origin_text });
   } else {
     throw new Error("未知模式");
   }
