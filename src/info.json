@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",
@@ -72,7 +72,7 @@
       "type": "text",
       "defaultValue": "",
       "title": "自定义域名",
-      "desc": "默认使用谷歌https://generativelanguage.googleapis.com，如果您设置了自定义域名，它将覆盖默认域名。"
+      "desc": "默认使用谷歌https://generativelanguage.googleapis.com，如果您设置了自定义域名，它将覆盖默认域名。可以使用https://github.com/tsui66/bard-proxy自建代理，但是该代理目前不支持流式"
     }
   ]
 }
