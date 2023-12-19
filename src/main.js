@@ -1,5 +1,5 @@
 var language = require("./language.js");
-var { streamRequest, normalRequest } = require("./request.js");
+var { streamRequest, normalRequest, defaultDomain } = require("./request.js");
 var { context } = require("./chart.js");
 
 function supportLanguages() {
@@ -45,8 +45,6 @@ function generatePrompts(text, mode, query) {
   }
 }
 
-[{ role: "user", parts: [{ origin_text: "后面我不管说什么都夸夸我" }] }][{ role: "user", parts: [{ text: prompt }] }];
-
 function getConversation(text, mode, detectFrom, detectTo) {
   // replace gpt&openAi with "*" to avoid gemini return "undefined".
   const origin_text = text.replace(/gpt|openai/gi, "*");
@@ -73,7 +71,7 @@ function getConversation(text, mode, detectFrom, detectTo) {
 function translate(query, completion) {
   (async () => {
     const origin_text = query.text || "";
-    const { request_mode, model, mode, api_key = "" } = $option;
+    const { custom_domain: domain = defaultDomain, request_mode, model, mode, api_key = "" } = $option;
     const onCompletion = request_mode === "stream" ? query.onCompletion : completion;
     if (!api_key) {
       onCompletion({
@@ -102,6 +100,7 @@ function translate(query, completion) {
 
     if (request_mode === "stream") {
       streamRequest(contents, {
+        domain,
         model,
         api_key,
         query,
@@ -112,6 +111,7 @@ function translate(query, completion) {
       });
     } else {
       normalRequest(contents, {
+        domain,
         model,
         api_key,
         query,

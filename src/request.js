@@ -1,10 +1,12 @@
 var utils = require("./utils.js");
 
-const streamRequest = async (contents, { model, api_key, query, onCompletion }) => {
+const defaultDomain = "https://generativelanguage.googleapis.com";
+
+const streamRequest = async (contents, { domain, model, api_key, query, onCompletion }) => {
   let resultText = "";
   return $http.streamRequest({
     method: "POST",
-    url: `https://generativelanguage.googleapis.com/v1/models/${model}:streamGenerateContent?key=${api_key}&alt=sse`,
+    url: `${domain}/v1/models/${model}:streamGenerateContent?key=${api_key}&alt=sse`,
     header: {
       "Content-Type": "application/json",
     },
@@ -38,10 +40,10 @@ const streamRequest = async (contents, { model, api_key, query, onCompletion }) 
   });
 };
 
-const normalRequest = async (contents, { model, api_key, onCompletion }) => {
+const normalRequest = async (contents, { domain, model, api_key, onCompletion }) => {
   $http.request({
     method: "POST",
-    url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${api_key}`,
+    url: `${domain}/v1/models/${model}:generateContent?key=${api_key}`,
     header: {
       "Content-Type": "application/json",
     },
@@ -67,3 +69,4 @@ const normalRequest = async (contents, { model, api_key, onCompletion }) => {
 
 exports.streamRequest = streamRequest;
 exports.normalRequest = normalRequest;
+exports.defaultDomain = defaultDomain;
