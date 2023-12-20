@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.12",
+      "desc": "feat: 修复自定义为空是接口地址错误",
+      "sha256": "322a70a7df19a1fd47543e65fd86db286aa52e76d7b4c29e788815952f4cad88",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.12/bob-plugin-gemini-translate_v0.0.12.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.11",
       "desc": "feat: 更新说明",
       "sha256": "268d7f87577543e7ce96b6c7938d5faeba385ae48e9e12681a2797a95199b13d",
