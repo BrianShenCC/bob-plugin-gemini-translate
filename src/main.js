@@ -71,7 +71,8 @@ function getConversation(text, mode, detectFrom, detectTo) {
 function translate(query, completion) {
   (async () => {
     const origin_text = query.text || "";
-    const { custom_domain: domain = defaultDomain, request_mode, model, mode, api_key = "" } = $option;
+    const { custom_domain, request_mode, model, mode, api_key = "" } = $option;
+    const domain = custom_domain || defaultDomain;
     const onCompletion = request_mode === "stream" ? query.onCompletion : completion;
     if (!api_key) {
       onCompletion({
