@@ -23,7 +23,7 @@ function polishPrompt(origin_text, { source_lang }) {
   return `I want you to act as a spelling corrector and improver. I will speak to you in any language and you will detect the language and answer in the corrected and improved version of my text, in language which code is ${source_lang}. I want you to replace my simplified A0-level words and sentences. Keep the meaning same, but make them more clear, concise, and coherent. I want you to only reply the correction, the improvements and nothing else, do not write explanations. Here's what I said:\n ${origin_text}`;
 }
 
-function generatePrompts(text, mode, query) {
+function generatePrompts(text, mode, query, option) {
   const detectTo = language.langMap.get(query.detectTo);
   const detectFrom = language.langMap.get(query.detectFrom);
   if (!detectTo) {
@@ -36,6 +36,13 @@ function generatePrompts(text, mode, query) {
   }
   const source_lang = detectFrom || "ZH";
   const target_lang = detectTo || "EN";
+  if (option.custom_prompt) {
+    return option.custom_prompt
+      .replace(/\$\{text\}/g, text)
+      .replace(/\$\{detectFrom\}/g, detectFrom)
+      .replace(/\$\{detectTo\}/g, detectTo);
+  }
+
   if (mode === "polish" || source_lang === target_lang) {
     return polishPrompt(text, { source_lang });
   } else if (mode === "translate") {
@@ -45,14 +52,11 @@ function generatePrompts(text, mode, query) {
   }
 }
 
-function getConversation(text, mode, detectFrom, detectTo) {
+function getConversation(text, mode, query, option) {
   // replace gpt&openAi with "*" to avoid gemini return "undefined".
   const origin_text = text.replace(/gpt|openai/gi, "*");
   if (mode === "polish" || mode === "translate") {
-    const prompt = generatePrompts(origin_text, mode, {
-      detectFrom,
-      detectTo,
-    });
+    const prompt = generatePrompts(origin_text, mode, query, option);
 
     return [{ role: "user", parts: [{ text: prompt }] }];
   } else if (mode === "chat") {
@@ -84,7 +88,7 @@ function translate(query, completion) {
       return;
     }
     if (origin_text?.trim() === "") return;
-    const contents = getConversation(origin_text, mode, query.detectFrom, query.detectTo);
+    const contents = getConversation(origin_text, mode, query, $option);
     if (contents.length === 0) {
       onCompletion({ result: { toParagraphs: ["对话已清空"] } });
       return;

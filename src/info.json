@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",
@@ -50,6 +50,13 @@
           "value": "chat"
         }
       ]
+    },
+    {
+      "identifier": "custom_prompt",
+      "type": "text",
+      "defaultValue": "",
+      "title": "自定义prompt",
+      "desc": "自定义prompt，目前仅在翻译和润色模式下生效，可以使用${detectFrom}获取来源语言，${detectTo}获取目标语言，${text}获取原文本"
     },
     {
       "identifier": "request_mode",
