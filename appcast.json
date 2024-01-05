@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.14",
+      "desc": "feat: optimize prompt",
+      "sha256": "a01464460105a94855c5ccf022365b47e708e1e2d2f6334e3abb7229c8a3ebbf",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.14/bob-plugin-gemini-translate_v0.0.14.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.13",
       "desc": "feat: 更新部分说明",
       "sha256": "d8a7b513d8a9e281729539e9fe58a74fd3612d3b2c245fac4410a27190518225",
