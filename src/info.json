@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",

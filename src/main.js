@@ -15,12 +15,12 @@ function translatePrompt(origin_text, { source_lang, target_lang }) {
   // 如果 ${source_lang}和 ${target_lang}一样，则回答"请检查你的翻译语言设置".
   // `;
 
-  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
+  // `下面我让你来充当翻译家，你的目标是把${source_lang}翻译成${target_lang}，请翻译时不要带翻译腔，而是要翻译得自然、流畅和地道，使用优美和高雅的表达方式。请翻译下面这段话：\n${origin_text}`
+  return `I want you to act as a translator. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in language which code is ${target_lang}. Here's what I said:\n ${origin_text}`;
 }
 
 function polishPrompt(origin_text, { source_lang }) {
-  if (source_lang === "ZH") return `请润色以下内容：\n${origin_text}`;
-  return `Revise the following sentences to make them more clear, concise, and coherent. \n${origin_text}`;
+  return `I want you to act as a spelling corrector and improver. I will speak to you in any language and you will detect the language and answer in the corrected and improved version of my text, in language which code is ${source_lang}. I want you to replace my simplified A0-level words and sentences. Keep the meaning same, but make them more clear, concise, and coherent. I want you to only reply the correction, the improvements and nothing else, do not write explanations. Here's what I said:\n ${origin_text}`;
 }
 
 function generatePrompts(text, mode, query) {
