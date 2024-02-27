@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.17",
+      "desc": "feat: 对翻译PROMPT进行优化",
+      "sha256": "2f4617d5cde4962cca03b44cc521a077243bfe08e6ae08c735f5eadf30df74ab",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.17/bob-plugin-gemini-translate_v0.0.17.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.16",
       "desc": "feat: 由于新prompt不稳定，还原翻译和润色的prompt",
       "sha256": "8e69683dafd3bdb48a4b7b26b8ea9480e2d9809e817f0e562eb4fb6f82802e75",
