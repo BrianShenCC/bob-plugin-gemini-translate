@@ -16,7 +16,21 @@ function translatePrompt(origin_text, { source_lang, target_lang }) {
   // `;
 
   // `下面我让你来充当翻译家，你的目标是把${source_lang}翻译成${target_lang}，请翻译时不要带翻译腔，而是要翻译得自然、流畅和地道，使用优美和高雅的表达方式。请翻译下面这段话：\n${origin_text}`
-  return `请将以下${source_lang}内容翻译成${target_lang}：\n${origin_text}`;
+  return `You are a professional,authentic translation engine,only returns translations.
+  For example:
+  <Start>
+  Hello <Keep This Symbol>
+  World <Keep This Symbol>
+  <End>
+  The translation is:
+  <Start>
+  你好<Keep This Symbol>
+  世界<Keep This Symbol>
+  <End>
+
+  Translate the content to ${target_lang} Language:
+
+  <Start>${origin_text}<End>`;
   // return `I want you to act as a translator. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in language which code is ${target_lang}. Here's what I said:\n ${origin_text}`;
 }
 

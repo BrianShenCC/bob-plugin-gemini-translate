@@ -23,7 +23,8 @@ const streamRequest = async (contents, { domain, model, api_key, query, onComple
       }
       streamText = streamText.replace(reg, "");
       const resultJson = JSON.parse(streamText);
-      resultText += resultJson?.candidates?.[0]?.content?.parts?.[0].text;
+      // TODO: 这里实现的不好，有空再改
+      resultText += resultJson?.candidates?.[0]?.content?.parts?.[0].text.replace("<Start>","").replace("<End>","");
       query.onStream({
         result: { toParagraphs: [resultText] },
       });
@@ -56,7 +57,8 @@ const normalRequest = async (contents, { domain, model, api_key, onCompletion })
       if (result.response.statusCode >= 400) {
         utils.handleError(onCompletion, result);
       } else {
-        const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text;
+      // TODO: 这里实现的不好，有空再改
+        const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text.replace("<Start>","").replace("<End>","");
         onCompletion({
           result: {
             toParagraphs: [resultText],
