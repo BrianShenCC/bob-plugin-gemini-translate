@@ -6,7 +6,7 @@ const streamRequest = async (contents, { domain, model, api_key, query, onComple
   let resultText = "";
   return $http.streamRequest({
     method: "POST",
-    url: `${domain}/v1/models/${model}:streamGenerateContent?key=${api_key}&alt=sse`,
+    url: `${domain}/v1beta/models/${model}:streamGenerateContent?key=${api_key}&alt=sse`,
     header: {
       "Content-Type": "application/json",
     },
@@ -24,7 +24,7 @@ const streamRequest = async (contents, { domain, model, api_key, query, onComple
       streamText = streamText.replace(reg, "");
       const resultJson = JSON.parse(streamText);
       // TODO: 这里实现的不好，有空再改
-      resultText += resultJson?.candidates?.[0]?.content?.parts?.[0].text.replace("<Start>","").replace("<End>","");
+      resultText += resultJson?.candidates?.[0]?.content?.parts?.[0].text.replace("<Start>", "");
       query.onStream({
         result: { toParagraphs: [resultText] },
       });
@@ -34,7 +34,7 @@ const streamRequest = async (contents, { domain, model, api_key, query, onComple
         utils.handleError(onCompletion, result);
       } else {
         onCompletion({
-          result: { toParagraphs: [resultText] },
+          result: { toParagraphs: [resultText.replace("<End>", "").replace("</End>", "")] },
         });
       }
     },
@@ -44,7 +44,7 @@ const streamRequest = async (contents, { domain, model, api_key, query, onComple
 const normalRequest = async (contents, { domain, model, api_key, onCompletion }) => {
   $http.request({
     method: "POST",
-    url: `${domain}/v1/models/${model}:generateContent?key=${api_key}`,
+    url: `${domain}/v1beta/models/${model}:generateContent?key=${api_key}`,
     header: {
       "Content-Type": "application/json",
     },
@@ -57,8 +57,11 @@ const normalRequest = async (contents, { domain, model, api_key, onCompletion })
       if (result.response.statusCode >= 400) {
         utils.handleError(onCompletion, result);
       } else {
-      // TODO: 这里实现的不好，有空再改
-        const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text.replace("<Start>","").replace("<End>","");
+        // TODO: 这里实现的不好，有空再改
+        const resultText = result.data?.candidates?.[0]?.content?.parts?.[0].text
+          .replace("<Start>", "")
+          .replace("<End>", "")
+          .replace("</End>", "");
         onCompletion({
           result: {
             toParagraphs: [resultText],
