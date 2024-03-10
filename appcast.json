@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.18",
+      "desc": "feat: 修复流式返回会出现<End>",
+      "sha256": "b3fb5e6c261a437a59985af5983f2f5d454f6f2da20df29967e171a81b649a3d",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.18/bob-plugin-gemini-translate_v0.0.18.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.17",
       "desc": "feat: 对翻译PROMPT进行优化",
       "sha256": "2f4617d5cde4962cca03b44cc521a077243bfe08e6ae08c735f5eadf30df74ab",
