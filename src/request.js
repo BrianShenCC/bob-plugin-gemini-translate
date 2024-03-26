@@ -17,6 +17,14 @@ const streamRequest = async (contents, { domain, model, api_key, query, onComple
     },
     streamHandler: (stream) => {
       let streamText = stream.text;
+      if (streamText?.includes("User location is not supported for the API use.")) {
+        onCompletion({
+          error: {
+            type: "param",
+            message: "User location is not supported for the API use.",
+          },
+        });
+      }
       const reg = /^data:/;
       if (!reg.test(streamText)) {
         throw new Error("response data invalid");
