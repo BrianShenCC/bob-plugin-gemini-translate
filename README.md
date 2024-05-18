@@ -31,3 +31,4 @@ Gemini的对话功能似乎经过测试好像要比GPT差。
 ## 感谢
 
 本仓库是在部分代码参考了优秀的bob插件 [bob-plugin-akl-chatgpt-free-translate](https://github.com/akl7777777/bob-plugin-akl-chatgpt-free-translate) 源码。感谢原作者的卓越贡献。
+
