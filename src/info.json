@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",
@@ -26,6 +26,18 @@
         {
           "title": "gemini-pro",
           "value": "gemini-pro"
+        },
+        {
+          "title": "gemini-1.5-flash",
+          "value": "gemini-1.5-flash-latest"
+        },
+        {
+          "title": "gemini-1.5-pro",
+          "value": "gemini-1.5-pro-latest"
+        },
+        {
+          "title": "gemini-1.0-pro",
+          "value": "gemini-1.0-pro-latest"
         }
       ],
       "desc": "使用的Gemini模型.\n内容中所有的openAi和gpt都会被替换为*，用以防止gemini不返回结果"
