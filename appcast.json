@@ -3,6 +3,13 @@
   "versions": [
     {
       "version": "0.0.20",
+      "desc": "feat: 去除openai文本替换",
+      "sha256": "d28d43ed64fb432b8effd2dc6f4682abf627ef3c567a97008b77d2fa75797a2f",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.20/bob-plugin-gemini-translate_v0.0.20.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
+      "version": "0.0.20",
       "desc": "Merge pull request #20 from Theigrams/main",
       "sha256": "5105fbffeffc578a4f1ad5874796d681b7cd57817d107e4d6f571ae21d9df738",
       "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.20/bob-plugin-gemini-translate_v0.0.20.bobplugin",
