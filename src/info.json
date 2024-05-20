@@ -40,7 +40,7 @@
           "value": "gemini-1.0-pro-latest"
         }
       ],
-      "desc": "使用的Gemini模型.\n内容中所有的openAi和gpt都会被替换为*，用以防止gemini不返回结果"
+      "desc": "使用的Gemini模型."
     },
     {
       "identifier": "mode",

@@ -70,10 +70,8 @@ function generatePrompts(text, mode, query, option) {
 }
 
 function getConversation(text, mode, query, option) {
-  // replace gpt&openAi with "*" to avoid gemini return "undefined".
-  const origin_text = text.replace(/gpt|openai/gi, "*");
   if (mode === "polish" || mode === "translate") {
-    const prompt = generatePrompts(origin_text, mode, query, option);
+    const prompt = generatePrompts(text, mode, query, option);
 
     return [{ role: "user", parts: [{ text: prompt }] }];
   } else if (mode === "chat") {
