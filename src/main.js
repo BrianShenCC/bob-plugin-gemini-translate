@@ -90,7 +90,8 @@ function getConversation(text, mode, query, option) {
 function translate(query, completion) {
   (async () => {
     const origin_text = query.text || "";
-    const { custom_domain, request_mode, model, mode, api_key = "" } = $option;
+    const { custom_domain, request_mode, model, custom_model , mode, api_key = "" } = $option;
+    const usingModel = custom_model || model;
     const domain = custom_domain || defaultDomain;
     const onCompletion = request_mode === "stream" ? query.onCompletion : completion;
     if (!api_key) {
@@ -121,7 +122,7 @@ function translate(query, completion) {
     if (request_mode === "stream") {
       streamRequest(contents, {
         domain,
-        model,
+        model: usingModel,
         api_key,
         query,
         onCompletion: function (result) {
@@ -132,7 +133,7 @@ function translate(query, completion) {
     } else {
       normalRequest(contents, {
         domain,
-        model,
+        model: usingModel,
         api_key,
         query,
         onCompletion: function (result) {
