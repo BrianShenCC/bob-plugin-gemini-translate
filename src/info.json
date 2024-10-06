@@ -1,6 +1,6 @@
 {
   "identifier": "brian.bob-plugin-gemini-translate",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "category": "translate",
   "name": "Gemini Translator",
   "summary": "调用Gemini服务进行翻译",
@@ -38,7 +38,12 @@
         {
           "title": "gemini-1.0-pro",
           "value": "gemini-1.0-pro-latest"
+        },
+        {
+          "title": " gemini-1.5-pro-002",
+          "value": " gemini-1.5-pro-002"
         }
+
       ],
       "desc": "使用的Gemini模型."
     },
