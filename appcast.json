@@ -2,6 +2,13 @@
   "identifier": "brian.bob-plugin-gemini-translate",
   "versions": [
     {
+      "version": "0.0.22",
+      "desc": "feat: add new model",
+      "sha256": "5ba66fc20016f226911de79a035b357ec61caad149da1c9a9f26636fe761af61",
+      "url": "https://github.com/BrianShenCC/bob-plugin-gemini-translate/releases/download/v0.0.22/bob-plugin-gemini-translate_v0.0.22.bobplugin",
+      "minBobVersion": "0.5.0"
+    },
+    {
       "version": "0.0.21",
       "desc": "Update release.yml",
       "sha256": "bb1059de8883b5b95a468e2c3ac19ab83121d4c91d8f3fbb81665a07ae694c74",
